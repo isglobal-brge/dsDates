@@ -2,6 +2,7 @@
 #'
 #' @param x
 #' @param format
+#' @param origin
 #'
 #' @return
 #' @export
