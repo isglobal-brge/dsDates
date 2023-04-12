@@ -8,6 +8,8 @@
 #' @export
 #'
 #' @examples
-cbind <- function(x, y){
-  return(base::cbind(x,y))
+cbind <- function(x, y, name){
+  table <- base::cbind(x,y)
+  colnames(table)[ncol(table)] <- name
+  return(table)
 }
