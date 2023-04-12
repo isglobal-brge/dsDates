@@ -2,3 +2,4 @@
 
 export(asDateDS)
 export(subsetByDateDS)
+export(cbind)
