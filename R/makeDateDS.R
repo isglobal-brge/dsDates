@@ -45,11 +45,21 @@
 #' @export
 makeDateDS <- function(year.name, month.name, day.name, hour.name, minute.name, second.name, format, newobj){
   # Extract year vector (mandatory)
-  year <- eval(parse(text=year.name), envir = parent.frame())
+  # Check if the object/column exists before trying to evaluate
+  tryCatch({
+    year <- eval(parse(text=year.name), envir = parent.frame())
+  }, error = function(e) {
+    stop(paste0("Cannot access '", year.name, "'. The object or column does not exist or cannot be evaluated. Original error: ", e$message), call. = FALSE)
+  })
+  
+  # Check if result is NULL (object doesn't exist)
+  if(is.null(year)){
+    stop(paste0("Cannot access '", year.name, "'. The object or column does not exist."), call. = FALSE)
+  }
   
   # Validate year is numeric/integer
   if(!inherits(year, c("numeric", "integer"))){
-    stop("Year column must be of class [numeric/integer]")
+    stop(paste0("Year column '", year.name, "' must be of class [numeric/integer], but got [", paste(class(year), collapse = "/"), "]"), call. = FALSE)
   }
   
   # Check if all years are NA
@@ -61,9 +71,18 @@ makeDateDS <- function(year.name, month.name, day.name, hour.name, minute.name, 
   if(is.null(month.name)){
     month <- rep(1L, length(year))
   } else {
-    month <- eval(parse(text=month.name), envir = parent.frame())
+    tryCatch({
+      month <- eval(parse(text=month.name), envir = parent.frame())
+    }, error = function(e) {
+      stop(paste0("Cannot access '", month.name, "'. The object or column does not exist or cannot be evaluated. Original error: ", e$message), call. = FALSE)
+    })
+    
+    if(is.null(month)){
+      stop(paste0("Cannot access '", month.name, "'. The object or column does not exist."), call. = FALSE)
+    }
+    
     if(!inherits(month, c("numeric", "integer"))){
-      stop("Month column must be of class [numeric/integer]")
+      stop(paste0("Month column '", month.name, "' must be of class [numeric/integer], but got [", paste(class(month), collapse = "/"), "]"), call. = FALSE)
     }
     # Ensure same length as year BEFORE any operations
     if(length(month) != length(year)){
@@ -76,9 +95,18 @@ makeDateDS <- function(year.name, month.name, day.name, hour.name, minute.name, 
   if(is.null(day.name)){
     day <- rep(1L, length(year))
   } else {
-    day <- eval(parse(text=day.name), envir = parent.frame())
+    tryCatch({
+      day <- eval(parse(text=day.name), envir = parent.frame())
+    }, error = function(e) {
+      stop(paste0("Cannot access '", day.name, "'. The object or column does not exist or cannot be evaluated. Original error: ", e$message), call. = FALSE)
+    })
+    
+    if(is.null(day)){
+      stop(paste0("Cannot access '", day.name, "'. The object or column does not exist."), call. = FALSE)
+    }
+    
     if(!inherits(day, c("numeric", "integer"))){
-      stop("Day column must be of class [numeric/integer]")
+      stop(paste0("Day column '", day.name, "' must be of class [numeric/integer], but got [", paste(class(day), collapse = "/"), "]"), call. = FALSE)
     }
     # Ensure same length as year BEFORE any operations
     if(length(day) != length(year)){
@@ -93,9 +121,18 @@ makeDateDS <- function(year.name, month.name, day.name, hour.name, minute.name, 
     if(is.null(hour.name)){
       hour <- rep(0L, length(year))
     } else {
-      hour <- eval(parse(text=hour.name), envir = parent.frame())
+      tryCatch({
+        hour <- eval(parse(text=hour.name), envir = parent.frame())
+      }, error = function(e) {
+        stop(paste0("Cannot access '", hour.name, "'. The object or column does not exist or cannot be evaluated. Original error: ", e$message), call. = FALSE)
+      })
+      
+      if(is.null(hour)){
+        stop(paste0("Cannot access '", hour.name, "'. The object or column does not exist."), call. = FALSE)
+      }
+      
       if(!inherits(hour, c("numeric", "integer"))){
-        stop("Hour column must be of class [numeric/integer]")
+        stop(paste0("Hour column '", hour.name, "' must be of class [numeric/integer], but got [", paste(class(hour), collapse = "/"), "]"), call. = FALSE)
       }
       if(length(hour) != length(year)){
         stop("Hour vector must have the same length as year vector")
@@ -106,9 +143,18 @@ makeDateDS <- function(year.name, month.name, day.name, hour.name, minute.name, 
     if(is.null(minute.name)){
       minute <- rep(0L, length(year))
     } else {
-      minute <- eval(parse(text=minute.name), envir = parent.frame())
+      tryCatch({
+        minute <- eval(parse(text=minute.name), envir = parent.frame())
+      }, error = function(e) {
+        stop(paste0("Cannot access '", minute.name, "'. The object or column does not exist or cannot be evaluated. Original error: ", e$message), call. = FALSE)
+      })
+      
+      if(is.null(minute)){
+        stop(paste0("Cannot access '", minute.name, "'. The object or column does not exist."), call. = FALSE)
+      }
+      
       if(!inherits(minute, c("numeric", "integer"))){
-        stop("Minute column must be of class [numeric/integer]")
+        stop(paste0("Minute column '", minute.name, "' must be of class [numeric/integer], but got [", paste(class(minute), collapse = "/"), "]"), call. = FALSE)
       }
       if(length(minute) != length(year)){
         stop("Minute vector must have the same length as year vector")
@@ -119,9 +165,18 @@ makeDateDS <- function(year.name, month.name, day.name, hour.name, minute.name, 
     if(is.null(second.name)){
       second <- rep(0L, length(year))
     } else {
-      second <- eval(parse(text=second.name), envir = parent.frame())
+      tryCatch({
+        second <- eval(parse(text=second.name), envir = parent.frame())
+      }, error = function(e) {
+        stop(paste0("Cannot access '", second.name, "'. The object or column does not exist or cannot be evaluated. Original error: ", e$message), call. = FALSE)
+      })
+      
+      if(is.null(second)){
+        stop(paste0("Cannot access '", second.name, "'. The object or column does not exist."), call. = FALSE)
+      }
+      
       if(!inherits(second, c("numeric", "integer"))){
-        stop("Second column must be of class [numeric/integer]")
+        stop(paste0("Second column '", second.name, "' must be of class [numeric/integer], but got [", paste(class(second), collapse = "/"), "]"), call. = FALSE)
       }
       if(length(second) != length(year)){
         stop("Second vector must have the same length as year vector")
