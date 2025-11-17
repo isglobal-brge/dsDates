@@ -9,9 +9,6 @@ subsetByDateDS(x.name, date_column, day, month, year, range)
 \arguments{
 \item{range}{}
 }
-\value{
-
-}
 \description{
 Title
 }
